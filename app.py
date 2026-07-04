@@ -4,8 +4,8 @@ from flask import Flask, request, jsonify, render_template_string
 app = Flask(__name__)
 
 # Kredensial Supabase langsung ditaruh di dalam codingan (Private Project)
-SUPABASE_URL = "https://xyz-id-supabase-kamu.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ey..." # Masukkan anon/public key di sini
+SUPABASE_URL = "https://kmyipabrhukygbashtwh.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtteWlwYWJyaHVreWdiYXNodHdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0ODMyMTIsImV4cCI6MjA5ODA1OTIxMn0.EQC95fFG2xeM0Wy5UiG55bo1ftx8sA7gS1etoTmOym0" # Masukkan anon/public key di sini
 
 # Header wajib untuk mengakses REST API Supabase
 HEADERS = {
