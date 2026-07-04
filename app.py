@@ -14,7 +14,7 @@ HEADERS = {
     "Content-Type": "application/json"
 }
 
-# Template HTML modern dengan Poppins & Font Awesome
+# Template HTML modern dengan fitur edit
 HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="id">
@@ -45,6 +45,95 @@ HTML_TEMPLATE = """
         <div class="absolute -top-40 -right-40 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl"></div>
         <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl"></div>
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/5 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeEditModal()"></div>
+        <div class="relative bg-[#12121a] border border-gray-800/60 rounded-2xl p-6 w-full max-w-md mx-4 shadow-2xl">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-blue-400"></i>
+                    Edit Inventory
+                </h3>
+                <button onclick="closeEditModal()" class="text-gray-500 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-400 text-sm mb-2">Username</label>
+                <input type="text" id="editUsername" disabled 
+                       class="w-full bg-[#0a0a0f] border border-gray-700 rounded-xl px-4 py-3 text-gray-400 font-medium">
+            </div>
+            
+            <div class="space-y-4 mb-6">
+                <div>
+                    <label class="block text-gray-400 text-sm mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-fish text-blue-400"></i> Elshark Gran Maja
+                    </label>
+                    <div class="flex items-center gap-2">
+                        <button onclick="decrementValue('editElshark')" 
+                                class="w-10 h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors">
+                            <i class="fa-solid fa-minus"></i>
+                        </button>
+                        <input type="number" id="editElshark" min="0" 
+                               class="flex-1 bg-[#0a0a0f] border border-gray-700 rounded-xl px-4 py-3 text-white text-center font-medium focus:border-blue-500 focus:outline-none">
+                        <button onclick="incrementValue('editElshark')" 
+                                class="w-10 h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-400 text-sm mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-purple-400"></i> Gladiator Shark
+                    </label>
+                    <div class="flex items-center gap-2">
+                        <button onclick="decrementValue('editGladiator')" 
+                                class="w-10 h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors">
+                            <i class="fa-solid fa-minus"></i>
+                        </button>
+                        <input type="number" id="editGladiator" min="0" 
+                               class="flex-1 bg-[#0a0a0f] border border-gray-700 rounded-xl px-4 py-3 text-white text-center font-medium focus:border-purple-500 focus:outline-none">
+                        <button onclick="incrementValue('editGladiator')" 
+                                class="w-10 h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-400 text-sm mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> Evolved Enchant Stone
+                    </label>
+                    <div class="flex items-center gap-2">
+                        <button onclick="decrementValue('editStone')" 
+                                class="w-10 h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors">
+                            <i class="fa-solid fa-minus"></i>
+                        </button>
+                        <input type="number" id="editStone" min="0" 
+                               class="flex-1 bg-[#0a0a0f] border border-gray-700 rounded-xl px-4 py-3 text-white text-center font-medium focus:border-amber-500 focus:outline-none">
+                        <button onclick="incrementValue('editStone')" 
+                                class="w-10 h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex gap-3">
+                <button onclick="closeEditModal()" 
+                        class="flex-1 px-4 py-3 rounded-xl border border-gray-700 text-gray-400 font-medium hover:bg-gray-800 transition-colors">
+                    Cancel
+                </button>
+                <button onclick="saveEdit()" 
+                        class="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg shadow-blue-500/25">
+                    <i class="fa-solid fa-check mr-2"></i> Save Changes
+                </button>
+            </div>
+        </div>
     </div>
 
     <div class="relative max-w-6xl mx-auto px-4 py-10">
@@ -139,11 +228,14 @@ HTML_TEMPLATE = """
                                     <i class="fa-solid fa-wand-magic-sparkles text-amber-400/70 mr-1"></i> Stone
                                 </span>
                             </th>
+                            <th class="py-4 px-6 text-center">
+                                <span class="text-gray-500 text-xs font-medium uppercase tracking-wider">Action</span>
+                            </th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-800/40">
                         {% for row in data %}
-                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200" data-username="{{ row.username }}">
                             <td class="py-4 px-6">
                                 <div class="flex items-center gap-3">
                                     <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-gray-700 to-gray-600 flex items-center justify-center text-sm font-medium text-white">
@@ -153,26 +245,32 @@ HTML_TEMPLATE = """
                                 </div>
                             </td>
                             <td class="py-4 px-6 text-center">
-                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 font-medium text-sm">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 font-medium text-sm item-value" data-field="elshark_gran_maja">
                                     {{ row.elshark_gran_maja }}
                                 </span>
                             </td>
                             <td class="py-4 px-6 text-center">
-                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-500/10 text-purple-400 font-medium text-sm">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-500/10 text-purple-400 font-medium text-sm item-value" data-field="gladiator_shark">
                                     {{ row.gladiator_shark }}
                                 </span>
                             </td>
                             <td class="py-4 px-6 text-center">
-                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/10 text-amber-400 font-medium text-sm">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/10 text-amber-400 font-medium text-sm item-value" data-field="evolved_enchant_stone">
                                     {{ row.evolved_enchant_stone }}
                                 </span>
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                <button onclick="openEditModal('{{ row.username }}', {{ row.elshark_gran_maja }}, {{ row.gladiator_shark }}, {{ row.evolved_enchant_stone }})" 
+                                        class="w-9 h-9 rounded-lg bg-gray-800 hover:bg-blue-500/20 hover:text-blue-400 text-gray-400 flex items-center justify-center transition-all duration-200 group">
+                                    <i class="fa-solid fa-pen-to-square group-hover:scale-110 transition-transform"></i>
+                                </button>
                             </td>
                         </tr>
                         {% endfor %}
                         
                         {% if not data %}
                         <tr>
-                            <td colspan="4" class="py-16 text-center">
+                            <td colspan="5" class="py-16 text-center">
                                 <div class="flex flex-col items-center gap-3">
                                     <div class="w-16 h-16 rounded-2xl bg-gray-800/50 flex items-center justify-center">
                                         <i class="fa-solid fa-inbox text-gray-600 text-2xl"></i>
@@ -190,17 +288,88 @@ HTML_TEMPLATE = """
     </div>
 
     <script>
+        let currentEditingUser = null;
+
+        function openEditModal(username, elshark, gladiator, stone) {
+            currentEditingUser = username;
+            document.getElementById('editUsername').value = username;
+            document.getElementById('editElshark').value = elshark;
+            document.getElementById('editGladiator').value = gladiator;
+            document.getElementById('editStone').value = stone;
+            document.getElementById('editModal').classList.remove('hidden');
+            document.getElementById('editModal').classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.add('hidden');
+            document.getElementById('editModal').classList.remove('flex');
+            document.body.style.overflow = '';
+            currentEditingUser = null;
+        }
+
+        function incrementValue(elementId) {
+            const input = document.getElementById(elementId);
+            input.value = parseInt(input.value) + 1;
+        }
+
+        function decrementValue(elementId) {
+            const input = document.getElementById(elementId);
+            const newValue = parseInt(input.value) - 1;
+            input.value = newValue >= 0 ? newValue : 0;
+        }
+
+        function saveEdit() {
+            if (!currentEditingUser) return;
+
+            const updatedData = {
+                username: currentEditingUser,
+                elshark_gran_maja: parseInt(document.getElementById('editElshark').value),
+                gladiator_shark: parseInt(document.getElementById('editGladiator').value),
+                evolved_enchant_stone: parseInt(document.getElementById('editStone').value)
+            };
+
+            fetch('/api/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Update the table row values
+                    const row = document.querySelector(`tr[data-username="${currentEditingUser}"]`);
+                    if (row) {
+                        const valueSpans = row.querySelectorAll('.item-value');
+                        valueSpans[0].textContent = updatedData.elshark_gran_maja;
+                        valueSpans[1].textContent = updatedData.gladiator_shark;
+                        valueSpans[2].textContent = updatedData.evolved_enchant_stone;
+                    }
+                    updateTotals();
+                    closeEditModal();
+                } else {
+                    alert('Failed to update data');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while saving');
+            });
+        }
+
         // Calculate and display totals
         function updateTotals() {
-            const rows = document.querySelectorAll('tbody tr:not(:last-child)');
+            const rows = document.querySelectorAll('tbody tr[data-username]');
             let totalShark = 0, totalGladiator = 0, totalStone = 0;
             
             rows.forEach(row => {
-                const cells = row.querySelectorAll('td span');
-                if (cells.length >= 3) {
-                    totalShark += parseInt(cells[1].textContent.trim()) || 0;
-                    totalGladiator += parseInt(cells[2].textContent.trim()) || 0;
-                    totalStone += parseInt(cells[3].textContent.trim()) || 0;
+                const valueSpans = row.querySelectorAll('.item-value');
+                if (valueSpans.length >= 3) {
+                    totalShark += parseInt(valueSpans[0].textContent.trim()) || 0;
+                    totalGladiator += parseInt(valueSpans[1].textContent.trim()) || 0;
+                    totalStone += parseInt(valueSpans[2].textContent.trim()) || 0;
                 }
             });
             
@@ -221,6 +390,13 @@ HTML_TEMPLATE = """
                 });
             }
         }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeEditModal();
+            }
+        });
     </script>
 </body>
 </html>
@@ -279,6 +455,29 @@ def track_item():
         requests.post(post_url, json=update_data, headers=HEADERS)
 
     return jsonify({"status": "success"}), 200
+
+@app.route('/api/update', methods=['POST'])
+def update_item():
+    req_data = request.json
+    username = req_data.get('username')
+    
+    if not username:
+        return jsonify({"error": "Username diperlukan"}), 400
+    
+    update_data = {
+        "elshark_gran_maja": req_data.get('elshark_gran_maja', 0),
+        "gladiator_shark": req_data.get('gladiator_shark', 0),
+        "evolved_enchant_stone": req_data.get('evolved_enchant_stone', 0)
+    }
+    
+    # Update data user
+    patch_url = f"{SUPABASE_URL}/rest/v1/inventory_tracking?username=eq.{username}"
+    res = requests.patch(patch_url, json=update_data, headers=HEADERS)
+    
+    if res.status_code in [200, 204]:
+        return jsonify({"status": "success"}), 200
+    else:
+        return jsonify({"status": "error", "message": "Gagal update data"}), 500
 
 @app.route('/api/reset', methods=['POST'])
 def reset_counts():
