@@ -14,7 +14,7 @@ HEADERS = {
     "Content-Type": "application/json"
 }
 
-# Template HTML modern dengan animasi AOS
+# Template HTML responsive dengan animasi sekali jalan
 HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="id">
@@ -90,19 +90,6 @@ HTML_TEMPLATE = """
             transform: perspective(400px) rotateY(0);
         }
         
-        /* Skeleton loading */
-        .skeleton {
-            background: linear-gradient(90deg, #1a1a2e 0%, #2a2a3e 50%, #1a1a2e 100%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s ease-in-out infinite;
-            border-radius: 0.5rem;
-        }
-        
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        
         /* Pulse animation for stats */
         @keyframes pulse-glow {
             0%, 100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.1); }
@@ -111,6 +98,44 @@ HTML_TEMPLATE = """
         
         .stats-card {
             animation: pulse-glow 3s ease-in-out infinite;
+        }
+        
+        /* Responsive table */
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .value-badge {
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+            min-width: fit-content;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .value-badge {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+            }
+            
+            .item-image-small {
+                width: 1rem !important;
+                height: 1rem !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-card .item-image {
+                width: 2.5rem !important;
+                height: 2.5rem !important;
+            }
         }
     </style>
 </head>
@@ -123,11 +148,11 @@ HTML_TEMPLATE = """
     </div>
 
     <!-- Edit Modal -->
-    <div id="editModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+    <div id="editModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeEditModal()"></div>
-        <div class="relative bg-[#12121a] border border-gray-800/60 rounded-2xl p-6 w-full max-w-md mx-4 shadow-2xl" data-aos="zoom-in" data-aos-duration="300">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+        <div class="relative bg-[#12121a] border border-gray-800/60 rounded-2xl p-4 sm:p-6 w-full max-w-md shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-4 sm:mb-6">
+                <h3 class="text-base sm:text-lg font-semibold text-white flex items-center gap-2">
                     <i class="fa-solid fa-pen-to-square text-blue-400"></i>
                     Edit Inventory
                 </h3>
@@ -136,152 +161,152 @@ HTML_TEMPLATE = """
                 </button>
             </div>
             
-            <div class="mb-4">
-                <label class="block text-gray-400 text-sm mb-2">Username</label>
+            <div class="mb-3 sm:mb-4">
+                <label class="block text-gray-400 text-xs sm:text-sm mb-1.5 sm:mb-2">Username</label>
                 <input type="text" id="editUsername" disabled 
-                       class="w-full bg-[#0a0a0f] border border-gray-700 rounded-xl px-4 py-3 text-gray-400 font-medium">
+                       class="w-full bg-[#0a0a0f] border border-gray-700 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-gray-400 font-medium">
             </div>
             
-            <div class="space-y-4 mb-6">
+            <div class="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
                 <div>
-                    <label class="block text-gray-400 text-sm mb-2 flex items-center gap-2">
-                        <img src="https://i.ibb.co.com/qMgYjNyS/no-Filter-1.png" alt="Elshark" class="w-8 h-8 object-contain item-image">
-                        Elshark Gran Maja
+                    <label class="block text-gray-400 text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2">
+                        <img src="https://i.ibb.co.com/qMgYjNyS/no-Filter-1.png" alt="Elshark" class="w-6 h-6 sm:w-8 sm:h-8 object-contain item-image">
+                        <span class="truncate">Elshark Gran Maja</span>
                     </label>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1.5 sm:gap-2">
                         <button onclick="decrementValue('editElshark')" 
-                                class="w-10 h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors">
-                            <i class="fa-solid fa-minus"></i>
+                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors flex-shrink-0">
+                            <i class="fa-solid fa-minus text-xs sm:text-sm"></i>
                         </button>
                         <input type="number" id="editElshark" min="0" 
-                               class="flex-1 bg-[#0a0a0f] border border-gray-700 rounded-xl px-4 py-3 text-white text-center font-medium focus:border-blue-500 focus:outline-none">
+                               class="flex-1 bg-[#0a0a0f] border border-gray-700 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white text-center font-medium focus:border-blue-500 focus:outline-none min-w-0">
                         <button onclick="incrementValue('editElshark')" 
-                                class="w-10 h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors">
-                            <i class="fa-solid fa-plus"></i>
+                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors flex-shrink-0">
+                            <i class="fa-solid fa-plus text-xs sm:text-sm"></i>
                         </button>
                     </div>
                 </div>
                 
                 <div>
-                    <label class="block text-gray-400 text-sm mb-2 flex items-center gap-2">
-                        <img src="https://i.ibb.co.com/kVzGR565/no-Filter.png" alt="Gladiator" class="w-8 h-8 object-contain item-image">
-                        Gladiator Shark
+                    <label class="block text-gray-400 text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2">
+                        <img src="https://i.ibb.co.com/kVzGR565/no-Filter.png" alt="Gladiator" class="w-6 h-6 sm:w-8 sm:h-8 object-contain item-image">
+                        <span class="truncate">Gladiator Shark</span>
                     </label>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1.5 sm:gap-2">
                         <button onclick="decrementValue('editGladiator')" 
-                                class="w-10 h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors">
-                            <i class="fa-solid fa-minus"></i>
+                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors flex-shrink-0">
+                            <i class="fa-solid fa-minus text-xs sm:text-sm"></i>
                         </button>
                         <input type="number" id="editGladiator" min="0" 
-                               class="flex-1 bg-[#0a0a0f] border border-gray-700 rounded-xl px-4 py-3 text-white text-center font-medium focus:border-purple-500 focus:outline-none">
+                               class="flex-1 bg-[#0a0a0f] border border-gray-700 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white text-center font-medium focus:border-purple-500 focus:outline-none min-w-0">
                         <button onclick="incrementValue('editGladiator')" 
-                                class="w-10 h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors">
-                            <i class="fa-solid fa-plus"></i>
+                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors flex-shrink-0">
+                            <i class="fa-solid fa-plus text-xs sm:text-sm"></i>
                         </button>
                     </div>
                 </div>
                 
                 <div>
-                    <label class="block text-gray-400 text-sm mb-2 flex items-center gap-2">
-                        <img src="https://i.ibb.co.com/bMhfSHw4/no-Filter-2.png" alt="Enchant Stone" class="w-8 h-8 object-contain item-image">
-                        Evolved Enchant Stone
+                    <label class="block text-gray-400 text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2">
+                        <img src="https://i.ibb.co.com/bMhfSHw4/no-Filter-2.png" alt="Enchant Stone" class="w-6 h-6 sm:w-8 sm:h-8 object-contain item-image">
+                        <span class="truncate">Evolved Enchant Stone</span>
                     </label>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1.5 sm:gap-2">
                         <button onclick="decrementValue('editStone')" 
-                                class="w-10 h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors">
-                            <i class="fa-solid fa-minus"></i>
+                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors flex-shrink-0">
+                            <i class="fa-solid fa-minus text-xs sm:text-sm"></i>
                         </button>
                         <input type="number" id="editStone" min="0" 
-                               class="flex-1 bg-[#0a0a0f] border border-gray-700 rounded-xl px-4 py-3 text-white text-center font-medium focus:border-amber-500 focus:outline-none">
+                               class="flex-1 bg-[#0a0a0f] border border-gray-700 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white text-center font-medium focus:border-amber-500 focus:outline-none min-w-0">
                         <button onclick="incrementValue('editStone')" 
-                                class="w-10 h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors">
-                            <i class="fa-solid fa-plus"></i>
+                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors flex-shrink-0">
+                            <i class="fa-solid fa-plus text-xs sm:text-sm"></i>
                         </button>
                     </div>
                 </div>
             </div>
             
-            <div class="flex gap-3">
+            <div class="flex gap-2 sm:gap-3">
                 <button onclick="closeEditModal()" 
-                        class="flex-1 px-4 py-3 rounded-xl border border-gray-700 text-gray-400 font-medium hover:bg-gray-800 transition-colors">
+                        class="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border border-gray-700 text-gray-400 text-sm sm:text-base font-medium hover:bg-gray-800 transition-colors">
                     Cancel
                 </button>
                 <button onclick="saveEdit()" 
-                        class="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg shadow-blue-500/25">
-                    <i class="fa-solid fa-check mr-2"></i> Save Changes
+                        class="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm sm:text-base font-medium hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg shadow-blue-500/25">
+                    <i class="fa-solid fa-check mr-1 sm:mr-2"></i> Save
                 </button>
             </div>
         </div>
     </div>
 
-    <div class="relative max-w-6xl mx-auto px-4 py-10">
+    <div class="relative max-w-6xl mx-auto px-3 sm:px-4 lg:px-6 py-6 sm:py-10">
         <!-- Header Section -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-10" 
-             data-aos="fade-down" data-aos-duration="800" data-aos-easing="ease-out-cubic">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6 mb-6 sm:mb-10" 
+             data-aos="fade-down" data-aos-duration="800" data-aos-easing="ease-out-cubic" data-aos-once="true">
             <div class="space-y-1">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/25"
-                         data-aos="zoom-in" data-aos-duration="600" data-aos-delay="200">
-                        <i class="fa-solid fa-gem text-white text-lg"></i>
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/25 flex-shrink-0"
+                         data-aos="zoom-in" data-aos-duration="600" data-aos-delay="200" data-aos-once="true">
+                        <i class="fa-solid fa-gem text-white text-sm sm:text-lg"></i>
                     </div>
-                    <h1 class="text-3xl font-semibold text-white tracking-tight" 
-                        data-aos="fade-right" data-aos-duration="600" data-aos-delay="400">
+                    <h1 class="text-2xl sm:text-3xl font-semibold text-white tracking-tight" 
+                        data-aos="fade-right" data-aos-duration="600" data-aos-delay="400" data-aos-once="true">
                         Gemstones<span class="text-blue-400">Hub</span>
                     </h1>
                 </div>
-                <p class="text-gray-500 text-sm ml-13" 
-                   data-aos="fade-up" data-aos-duration="600" data-aos-delay="600">
+                <p class="text-gray-500 text-xs sm:text-sm ml-10 sm:ml-13" 
+                   data-aos="fade-up" data-aos-duration="600" data-aos-delay="600" data-aos-once="true">
                     Inventory tracking dashboard
                 </p>
             </div>
             
             <button onclick="resetData()" 
-                    class="group flex items-center gap-2 px-5 py-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 font-medium text-sm hover:bg-red-500/20 hover:border-red-500/40 transition-all duration-300"
-                    data-aos="fade-left" data-aos-duration="600" data-aos-delay="400">
+                    class="group flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 font-medium text-xs sm:text-sm hover:bg-red-500/20 hover:border-red-500/40 transition-all duration-300 w-full sm:w-auto justify-center"
+                    data-aos="fade-left" data-aos-duration="600" data-aos-delay="400" data-aos-once="true">
                 <i class="fa-solid fa-rotate-left group-hover:-translate-x-1 transition-transform duration-300"></i>
                 <span>Reset Data</span>
             </button>
         </div>
 
         <!-- Stats Overview Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-10">
-            <div class="bg-[#12121a] border border-gray-800/60 rounded-2xl p-5 hover:border-blue-500/30 transition-all duration-300 group stats-card"
-                 data-aos="flip-left" data-aos-duration="800" data-aos-delay="100">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 rounded-xl bg-blue-500/10 flex items-center justify-center p-2 group-hover:scale-110 transition-transform duration-300">
+        <div class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5 mb-6 sm:mb-10">
+            <div class="bg-[#12121a] border border-gray-800/60 rounded-2xl p-3 sm:p-5 hover:border-blue-500/30 transition-all duration-300 group stats-card"
+                 data-aos="flip-left" data-aos-duration="800" data-aos-delay="100" data-aos-once="true">
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <div class="w-10 h-10 sm:w-12 md:w-14 sm:h-12 md:h-14 rounded-xl bg-blue-500/10 flex items-center justify-center p-1.5 sm:p-2 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
                         <img src="https://i.ibb.co.com/qMgYjNyS/no-Filter-1.png" alt="Elshark" class="w-full h-full object-contain item-image">
                     </div>
-                    <div>
-                        <p class="text-gray-500 text-xs uppercase tracking-wider">Elshark Gran Maja</p>
-                        <p class="text-2xl font-semibold text-white mt-1" id="total-shark">-</p>
+                    <div class="min-w-0">
+                        <p class="text-gray-500 text-[10px] xs:text-xs uppercase tracking-wider truncate">Elshark Gran Maja</p>
+                        <p class="text-lg sm:text-xl md:text-2xl font-semibold text-white mt-0.5 sm:mt-1 tabular-nums" id="total-shark">-</p>
                     </div>
                 </div>
             </div>
             
-            <div class="bg-[#12121a] border border-gray-800/60 rounded-2xl p-5 hover:border-purple-500/30 transition-all duration-300 group stats-card"
-                 data-aos="flip-left" data-aos-duration="800" data-aos-delay="300"
+            <div class="bg-[#12121a] border border-gray-800/60 rounded-2xl p-3 sm:p-5 hover:border-purple-500/30 transition-all duration-300 group stats-card"
+                 data-aos="flip-left" data-aos-duration="800" data-aos-delay="300" data-aos-once="true"
                  style="animation-delay: 0.5s;">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 rounded-xl bg-purple-500/10 flex items-center justify-center p-2 group-hover:scale-110 transition-transform duration-300">
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <div class="w-10 h-10 sm:w-12 md:w-14 sm:h-12 md:h-14 rounded-xl bg-purple-500/10 flex items-center justify-center p-1.5 sm:p-2 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
                         <img src="https://i.ibb.co.com/kVzGR565/no-Filter.png" alt="Gladiator" class="w-full h-full object-contain item-image">
                     </div>
-                    <div>
-                        <p class="text-gray-500 text-xs uppercase tracking-wider">Gladiator Shark</p>
-                        <p class="text-2xl font-semibold text-white mt-1" id="total-gladiator">-</p>
+                    <div class="min-w-0">
+                        <p class="text-gray-500 text-[10px] xs:text-xs uppercase tracking-wider truncate">Gladiator Shark</p>
+                        <p class="text-lg sm:text-xl md:text-2xl font-semibold text-white mt-0.5 sm:mt-1 tabular-nums" id="total-gladiator">-</p>
                     </div>
                 </div>
             </div>
             
-            <div class="bg-[#12121a] border border-gray-800/60 rounded-2xl p-5 hover:border-amber-500/30 transition-all duration-300 group stats-card"
-                 data-aos="flip-left" data-aos-duration="800" data-aos-delay="500"
+            <div class="bg-[#12121a] border border-gray-800/60 rounded-2xl p-3 sm:p-5 hover:border-amber-500/30 transition-all duration-300 group stats-card xs:col-span-2 sm:col-span-1"
+                 data-aos="flip-left" data-aos-duration="800" data-aos-delay="500" data-aos-once="true"
                  style="animation-delay: 1s;">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 rounded-xl bg-amber-500/10 flex items-center justify-center p-2 group-hover:scale-110 transition-transform duration-300">
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <div class="w-10 h-10 sm:w-12 md:w-14 sm:h-12 md:h-14 rounded-xl bg-amber-500/10 flex items-center justify-center p-1.5 sm:p-2 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
                         <img src="https://i.ibb.co.com/bMhfSHw4/no-Filter-2.png" alt="Enchant Stone" class="w-full h-full object-contain item-image">
                     </div>
-                    <div>
-                        <p class="text-gray-500 text-xs uppercase tracking-wider">Enchant Stone</p>
-                        <p class="text-2xl font-semibold text-white mt-1" id="total-stone">-</p>
+                    <div class="min-w-0">
+                        <p class="text-gray-500 text-[10px] xs:text-xs uppercase tracking-wider truncate">Enchant Stone</p>
+                        <p class="text-lg sm:text-xl md:text-2xl font-semibold text-white mt-0.5 sm:mt-1 tabular-nums" id="total-stone">-</p>
                     </div>
                 </div>
             </div>
@@ -289,41 +314,41 @@ HTML_TEMPLATE = """
 
         <!-- Table Section -->
         <div class="bg-[#12121a] border border-gray-800/60 rounded-2xl overflow-hidden"
-             data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
-            <div class="px-6 py-5 border-b border-gray-800/60">
-                <h2 class="text-lg font-medium text-white flex items-center gap-2">
+             data-aos="fade-up" data-aos-duration="800" data-aos-delay="200" data-aos-once="true">
+            <div class="px-4 sm:px-6 py-3 sm:py-5 border-b border-gray-800/60">
+                <h2 class="text-base sm:text-lg font-medium text-white flex items-center gap-2">
                     <i class="fa-solid fa-users text-gray-400"></i>
                     Player Inventory
                 </h2>
             </div>
             
-            <div class="overflow-x-auto">
-                <table class="w-full">
+            <div class="table-container">
+                <table class="w-full min-w-[600px] md:min-w-full">
                     <thead>
                         <tr class="border-b border-gray-800/60">
-                            <th class="py-4 px-6 text-left">
-                                <span class="text-gray-500 text-xs font-medium uppercase tracking-wider">Player</span>
+                            <th class="py-3 sm:py-4 px-3 sm:px-6 text-left">
+                                <span class="text-gray-500 text-[10px] xs:text-xs font-medium uppercase tracking-wider">Player</span>
                             </th>
-                            <th class="py-4 px-6 text-center">
-                                <span class="text-gray-500 text-xs font-medium uppercase tracking-wider flex items-center justify-center gap-1.5">
-                                    <img src="https://i.ibb.co.com/qMgYjNyS/no-Filter-1.png" alt="Elshark" class="w-6 h-6 object-contain item-image">
-                                    Elshark
+                            <th class="py-3 sm:py-4 px-2 sm:px-4 md:px-6 text-center">
+                                <span class="text-gray-500 text-[10px] xs:text-xs font-medium uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5">
+                                    <img src="https://i.ibb.co.com/qMgYjNyS/no-Filter-1.png" alt="Elshark" class="w-4 h-4 sm:w-5 md:w-6 sm:h-5 md:h-6 object-contain item-image flex-shrink-0">
+                                    <span class="hidden xs:inline">Elshark</span>
                                 </span>
                             </th>
-                            <th class="py-4 px-6 text-center">
-                                <span class="text-gray-500 text-xs font-medium uppercase tracking-wider flex items-center justify-center gap-1.5">
-                                    <img src="https://i.ibb.co.com/kVzGR565/no-Filter.png" alt="Gladiator" class="w-6 h-6 object-contain item-image">
-                                    Gladiator
+                            <th class="py-3 sm:py-4 px-2 sm:px-4 md:px-6 text-center">
+                                <span class="text-gray-500 text-[10px] xs:text-xs font-medium uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5">
+                                    <img src="https://i.ibb.co.com/kVzGR565/no-Filter.png" alt="Gladiator" class="w-4 h-4 sm:w-5 md:w-6 sm:h-5 md:h-6 object-contain item-image flex-shrink-0">
+                                    <span class="hidden xs:inline">Gladiator</span>
                                 </span>
                             </th>
-                            <th class="py-4 px-6 text-center">
-                                <span class="text-gray-500 text-xs font-medium uppercase tracking-wider flex items-center justify-center gap-1.5">
-                                    <img src="https://i.ibb.co.com/bMhfSHw4/no-Filter-2.png" alt="Stone" class="w-6 h-6 object-contain item-image">
-                                    Stone
+                            <th class="py-3 sm:py-4 px-2 sm:px-4 md:px-6 text-center">
+                                <span class="text-gray-500 text-[10px] xs:text-xs font-medium uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5">
+                                    <img src="https://i.ibb.co.com/bMhfSHw4/no-Filter-2.png" alt="Stone" class="w-4 h-4 sm:w-5 md:w-6 sm:h-5 md:h-6 object-contain item-image flex-shrink-0">
+                                    <span class="hidden xs:inline">Stone</span>
                                 </span>
                             </th>
-                            <th class="py-4 px-6 text-center">
-                                <span class="text-gray-500 text-xs font-medium uppercase tracking-wider">Action</span>
+                            <th class="py-3 sm:py-4 px-2 sm:px-4 md:px-6 text-center">
+                                <span class="text-gray-500 text-[10px] xs:text-xs font-medium uppercase tracking-wider">Action</span>
                             </th>
                         </tr>
                     </thead>
@@ -331,37 +356,37 @@ HTML_TEMPLATE = """
                         {% for row in data %}
                         <tr class="hover:bg-white/[0.02] transition-colors duration-200" 
                             data-username="{{ row.username }}"
-                            data-aos="fade-up-custom" data-aos-duration="500" data-aos-delay="{{ loop.index * 100 }}">
-                            <td class="py-4 px-6">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-gray-700 to-gray-600 flex items-center justify-center text-sm font-medium text-white">
+                            data-aos="fade-up-custom" data-aos-duration="500" data-aos-delay="{{ loop.index * 100 }}" data-aos-once="true">
+                            <td class="py-3 sm:py-4 px-3 sm:px-6">
+                                <div class="flex items-center gap-2 sm:gap-3">
+                                    <div class="w-7 h-7 sm:w-8 md:w-9 sm:h-8 md:h-9 rounded-lg bg-gradient-to-br from-gray-700 to-gray-600 flex items-center justify-center text-xs sm:text-sm font-medium text-white flex-shrink-0">
                                         {{ row.username[:1].upper() }}
                                     </div>
-                                    <span class="text-white font-medium">{{ row.username }}</span>
+                                    <span class="text-white text-sm sm:text-base font-medium truncate max-w-[80px] sm:max-w-[120px] md:max-w-none">{{ row.username }}</span>
                                 </div>
                             </td>
-                            <td class="py-4 px-6 text-center">
-                                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 font-medium text-sm">
-                                    <img src="https://i.ibb.co.com/qMgYjNyS/no-Filter-1.png" alt="Elshark" class="w-5 h-5 object-contain item-image">
-                                    <span class="item-value" data-field="elshark_gran_maja">{{ row.elshark_gran_maja }}</span>
+                            <td class="py-3 sm:py-4 px-2 sm:px-4 md:px-6 text-center">
+                                <div class="value-badge bg-blue-500/10 text-blue-400">
+                                    <img src="https://i.ibb.co.com/qMgYjNyS/no-Filter-1.png" alt="Elshark" class="w-4 h-4 sm:w-5 sm:h-5 object-contain item-image flex-shrink-0">
+                                    <span class="item-value tabular-nums" data-field="elshark_gran_maja">{{ row.elshark_gran_maja }}</span>
                                 </div>
                             </td>
-                            <td class="py-4 px-6 text-center">
-                                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-purple-500/10 text-purple-400 font-medium text-sm">
-                                    <img src="https://i.ibb.co.com/kVzGR565/no-Filter.png" alt="Gladiator" class="w-5 h-5 object-contain item-image">
-                                    <span class="item-value" data-field="gladiator_shark">{{ row.gladiator_shark }}</span>
+                            <td class="py-3 sm:py-4 px-2 sm:px-4 md:px-6 text-center">
+                                <div class="value-badge bg-purple-500/10 text-purple-400">
+                                    <img src="https://i.ibb.co.com/kVzGR565/no-Filter.png" alt="Gladiator" class="w-4 h-4 sm:w-5 sm:h-5 object-contain item-image flex-shrink-0">
+                                    <span class="item-value tabular-nums" data-field="gladiator_shark">{{ row.gladiator_shark }}</span>
                                 </div>
                             </td>
-                            <td class="py-4 px-6 text-center">
-                                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/10 text-amber-400 font-medium text-sm">
-                                    <img src="https://i.ibb.co.com/bMhfSHw4/no-Filter-2.png" alt="Stone" class="w-5 h-5 object-contain item-image">
-                                    <span class="item-value" data-field="evolved_enchant_stone">{{ row.evolved_enchant_stone }}</span>
+                            <td class="py-3 sm:py-4 px-2 sm:px-4 md:px-6 text-center">
+                                <div class="value-badge bg-amber-500/10 text-amber-400">
+                                    <img src="https://i.ibb.co.com/bMhfSHw4/no-Filter-2.png" alt="Stone" class="w-4 h-4 sm:w-5 sm:h-5 object-contain item-image flex-shrink-0">
+                                    <span class="item-value tabular-nums" data-field="evolved_enchant_stone">{{ row.evolved_enchant_stone }}</span>
                                 </div>
                             </td>
-                            <td class="py-4 px-6 text-center">
+                            <td class="py-3 sm:py-4 px-2 sm:px-4 md:px-6 text-center">
                                 <button onclick="openEditModal('{{ row.username }}', {{ row.elshark_gran_maja }}, {{ row.gladiator_shark }}, {{ row.evolved_enchant_stone }})" 
-                                        class="w-9 h-9 rounded-lg bg-gray-800 hover:bg-blue-500/20 hover:text-blue-400 text-gray-400 flex items-center justify-center transition-all duration-200 group">
-                                    <i class="fa-solid fa-pen-to-square group-hover:scale-110 transition-transform"></i>
+                                        class="w-7 h-7 sm:w-8 md:w-9 sm:h-8 md:h-9 rounded-lg bg-gray-800 hover:bg-blue-500/20 hover:text-blue-400 text-gray-400 flex items-center justify-center transition-all duration-200 group">
+                                    <i class="fa-solid fa-pen-to-square text-xs sm:text-sm group-hover:scale-110 transition-transform"></i>
                                 </button>
                             </td>
                         </tr>
@@ -369,13 +394,13 @@ HTML_TEMPLATE = """
                         
                         {% if not data %}
                         <tr>
-                            <td colspan="5" class="py-16 text-center" data-aos="fade-up" data-aos-duration="600">
-                                <div class="flex flex-col items-center gap-3">
-                                    <div class="w-16 h-16 rounded-2xl bg-gray-800/50 flex items-center justify-center">
-                                        <i class="fa-solid fa-inbox text-gray-600 text-2xl"></i>
+                            <td colspan="5" class="py-12 sm:py-16 text-center">
+                                <div class="flex flex-col items-center gap-2 sm:gap-3">
+                                    <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-gray-800/50 flex items-center justify-center">
+                                        <i class="fa-solid fa-inbox text-gray-600 text-xl sm:text-2xl"></i>
                                     </div>
-                                    <p class="text-gray-500 font-medium">No data yet</p>
-                                    <p class="text-gray-600 text-sm">Start tracking your inventory items</p>
+                                    <p class="text-gray-500 text-sm sm:text-base font-medium">No data yet</p>
+                                    <p class="text-gray-600 text-xs sm:text-sm">Start tracking your inventory items</p>
                                 </div>
                             </td>
                         </tr>
@@ -388,15 +413,16 @@ HTML_TEMPLATE = """
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
-        // Initialize AOS
+        // Initialize AOS with once: true untuk animasi sekali jalan
         AOS.init({
             duration: 800,
             easing: 'ease-out-cubic',
-            once: false,
+            once: true,
             mirror: false,
             offset: 50,
             delay: 100,
-            anchorPlacement: 'top-bottom'
+            anchorPlacement: 'top-bottom',
+            disable: false
         });
         
         let currentEditingUser = null;
@@ -410,11 +436,6 @@ HTML_TEMPLATE = """
             document.getElementById('editModal').classList.remove('hidden');
             document.getElementById('editModal').classList.add('flex');
             document.body.style.overflow = 'hidden';
-            
-            // Refresh AOS for modal
-            setTimeout(() => {
-                AOS.refresh();
-            }, 100);
         }
 
         function closeEditModal() {
@@ -496,32 +517,9 @@ HTML_TEMPLATE = """
                 }
             });
             
-            // Animate number changes
-            animateValue('total-shark', totalShark || 0);
-            animateValue('total-gladiator', totalGladiator || 0);
-            animateValue('total-stone', totalStone || 0);
-        }
-        
-        function animateValue(elementId, newValue) {
-            const element = document.getElementById(elementId);
-            const currentValue = parseInt(element.textContent) || 0;
-            const duration = 500;
-            const startTime = performance.now();
-            
-            function update(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const easedProgress = 1 - Math.pow(1 - progress, 3); // Ease out cubic
-                
-                const currentNumber = Math.floor(currentValue + (newValue - currentValue) * easedProgress);
-                element.textContent = currentNumber;
-                
-                if (progress < 1) {
-                    requestAnimationFrame(update);
-                }
-            }
-            
-            requestAnimationFrame(update);
+            document.getElementById('total-shark').textContent = totalShark || '0';
+            document.getElementById('total-gladiator').textContent = totalGladiator || '0';
+            document.getElementById('total-stone').textContent = totalStone || '0';
         }
         
         updateTotals();
