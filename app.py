@@ -14,13 +14,13 @@ HEADERS = {
     "Content-Type": "application/json"
 }
 
-# Template HTML responsive dengan animasi sekali jalan
+# Template HTML dengan overflow hidden dan centered layout
 HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GemstonesHub • Farming Tracker</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,6 +40,23 @@ HTML_TEMPLATE = """
         }
     </script>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+        
         .item-image {
             filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
             transition: transform 0.3s ease, filter 0.3s ease;
@@ -100,10 +117,31 @@ HTML_TEMPLATE = """
             animation: pulse-glow 3s ease-in-out infinite;
         }
         
-        /* Responsive table */
-        .table-container {
+        /* Responsive table container */
+        .table-wrapper {
+            width: 100%;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(75, 85, 99, 0.3) transparent;
+        }
+        
+        .table-wrapper::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .table-wrapper::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: rgba(75, 85, 99, 0.3);
+            border-radius: 3px;
+        }
+        
+        .table-wrapper table {
+            width: 100%;
+            min-width: 600px;
         }
         
         .value-badge {
@@ -118,28 +156,34 @@ HTML_TEMPLATE = """
             min-width: fit-content;
         }
         
+        /* Container constraints */
+        .main-container {
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+        
         /* Responsive adjustments */
         @media (max-width: 640px) {
             .value-badge {
                 padding: 0.25rem 0.5rem;
                 font-size: 0.75rem;
+                gap: 0.25rem;
             }
             
-            .item-image-small {
-                width: 1rem !important;
-                height: 1rem !important;
+            .table-wrapper table {
+                min-width: 500px;
             }
         }
         
         @media (max-width: 480px) {
-            .stats-card .item-image {
-                width: 2.5rem !important;
-                height: 2.5rem !important;
+            .table-wrapper table {
+                min-width: 450px;
             }
         }
     </style>
 </head>
-<body class="bg-[#0a0a0f] min-h-screen font-poppins">
+<body class="bg-[#0a0a0f] min-h-screen font-poppins overflow-x-hidden">
     <!-- Background Gradient Elements -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
         <div class="absolute -top-40 -right-40 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl animate-pulse" style="animation-duration: 8s;"></div>
@@ -171,7 +215,7 @@ HTML_TEMPLATE = """
                 <div>
                     <label class="block text-gray-400 text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2">
                         <img src="https://i.ibb.co.com/qMgYjNyS/no-Filter-1.png" alt="Elshark" class="w-6 h-6 sm:w-8 sm:h-8 object-contain item-image">
-                        <span class="truncate">Elshark Gran Maja</span>
+                        <span>Elshark Gran Maja</span>
                     </label>
                     <div class="flex items-center gap-1.5 sm:gap-2">
                         <button onclick="decrementValue('editElshark')" 
@@ -190,7 +234,7 @@ HTML_TEMPLATE = """
                 <div>
                     <label class="block text-gray-400 text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2">
                         <img src="https://i.ibb.co.com/kVzGR565/no-Filter.png" alt="Gladiator" class="w-6 h-6 sm:w-8 sm:h-8 object-contain item-image">
-                        <span class="truncate">Gladiator Shark</span>
+                        <span>Gladiator Shark</span>
                     </label>
                     <div class="flex items-center gap-1.5 sm:gap-2">
                         <button onclick="decrementValue('editGladiator')" 
@@ -209,7 +253,7 @@ HTML_TEMPLATE = """
                 <div>
                     <label class="block text-gray-400 text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2">
                         <img src="https://i.ibb.co.com/bMhfSHw4/no-Filter-2.png" alt="Enchant Stone" class="w-6 h-6 sm:w-8 sm:h-8 object-contain item-image">
-                        <span class="truncate">Evolved Enchant Stone</span>
+                        <span>Evolved Enchant Stone</span>
                     </label>
                     <div class="flex items-center gap-1.5 sm:gap-2">
                         <button onclick="decrementValue('editStone')" 
@@ -239,7 +283,7 @@ HTML_TEMPLATE = """
         </div>
     </div>
 
-    <div class="relative max-w-6xl mx-auto px-3 sm:px-4 lg:px-6 py-6 sm:py-10">
+    <div class="main-container relative max-w-6xl mx-auto px-3 sm:px-4 lg:px-6 py-6 sm:py-10">
         <!-- Header Section -->
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6 mb-6 sm:mb-10" 
              data-aos="fade-down" data-aos-duration="800" data-aos-easing="ease-out-cubic" data-aos-once="true">
@@ -269,14 +313,14 @@ HTML_TEMPLATE = """
         </div>
 
         <!-- Stats Overview Cards -->
-        <div class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5 mb-6 sm:mb-10">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5 mb-6 sm:mb-10">
             <div class="bg-[#12121a] border border-gray-800/60 rounded-2xl p-3 sm:p-5 hover:border-blue-500/30 transition-all duration-300 group stats-card"
                  data-aos="flip-left" data-aos-duration="800" data-aos-delay="100" data-aos-once="true">
                 <div class="flex items-center gap-3 sm:gap-4">
                     <div class="w-10 h-10 sm:w-12 md:w-14 sm:h-12 md:h-14 rounded-xl bg-blue-500/10 flex items-center justify-center p-1.5 sm:p-2 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
                         <img src="https://i.ibb.co.com/qMgYjNyS/no-Filter-1.png" alt="Elshark" class="w-full h-full object-contain item-image">
                     </div>
-                    <div class="min-w-0">
+                    <div class="min-w-0 flex-1">
                         <p class="text-gray-500 text-[10px] xs:text-xs uppercase tracking-wider truncate">Elshark Gran Maja</p>
                         <p class="text-lg sm:text-xl md:text-2xl font-semibold text-white mt-0.5 sm:mt-1 tabular-nums" id="total-shark">-</p>
                     </div>
@@ -290,21 +334,21 @@ HTML_TEMPLATE = """
                     <div class="w-10 h-10 sm:w-12 md:w-14 sm:h-12 md:h-14 rounded-xl bg-purple-500/10 flex items-center justify-center p-1.5 sm:p-2 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
                         <img src="https://i.ibb.co.com/kVzGR565/no-Filter.png" alt="Gladiator" class="w-full h-full object-contain item-image">
                     </div>
-                    <div class="min-w-0">
+                    <div class="min-w-0 flex-1">
                         <p class="text-gray-500 text-[10px] xs:text-xs uppercase tracking-wider truncate">Gladiator Shark</p>
                         <p class="text-lg sm:text-xl md:text-2xl font-semibold text-white mt-0.5 sm:mt-1 tabular-nums" id="total-gladiator">-</p>
                     </div>
                 </div>
             </div>
             
-            <div class="bg-[#12121a] border border-gray-800/60 rounded-2xl p-3 sm:p-5 hover:border-amber-500/30 transition-all duration-300 group stats-card xs:col-span-2 sm:col-span-1"
+            <div class="bg-[#12121a] border border-gray-800/60 rounded-2xl p-3 sm:p-5 hover:border-amber-500/30 transition-all duration-300 group stats-card"
                  data-aos="flip-left" data-aos-duration="800" data-aos-delay="500" data-aos-once="true"
                  style="animation-delay: 1s;">
                 <div class="flex items-center gap-3 sm:gap-4">
                     <div class="w-10 h-10 sm:w-12 md:w-14 sm:h-12 md:h-14 rounded-xl bg-amber-500/10 flex items-center justify-center p-1.5 sm:p-2 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
                         <img src="https://i.ibb.co.com/bMhfSHw4/no-Filter-2.png" alt="Enchant Stone" class="w-full h-full object-contain item-image">
                     </div>
-                    <div class="min-w-0">
+                    <div class="min-w-0 flex-1">
                         <p class="text-gray-500 text-[10px] xs:text-xs uppercase tracking-wider truncate">Enchant Stone</p>
                         <p class="text-lg sm:text-xl md:text-2xl font-semibold text-white mt-0.5 sm:mt-1 tabular-nums" id="total-stone">-</p>
                     </div>
@@ -322,8 +366,8 @@ HTML_TEMPLATE = """
                 </h2>
             </div>
             
-            <div class="table-container">
-                <table class="w-full min-w-[600px] md:min-w-full">
+            <div class="table-wrapper">
+                <table>
                     <thead>
                         <tr class="border-b border-gray-800/60">
                             <th class="py-3 sm:py-4 px-3 sm:px-6 text-left">
@@ -332,19 +376,19 @@ HTML_TEMPLATE = """
                             <th class="py-3 sm:py-4 px-2 sm:px-4 md:px-6 text-center">
                                 <span class="text-gray-500 text-[10px] xs:text-xs font-medium uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5">
                                     <img src="https://i.ibb.co.com/qMgYjNyS/no-Filter-1.png" alt="Elshark" class="w-4 h-4 sm:w-5 md:w-6 sm:h-5 md:h-6 object-contain item-image flex-shrink-0">
-                                    <span class="hidden xs:inline">Elshark</span>
+                                    <span class="hidden sm:inline">Elshark</span>
                                 </span>
                             </th>
                             <th class="py-3 sm:py-4 px-2 sm:px-4 md:px-6 text-center">
                                 <span class="text-gray-500 text-[10px] xs:text-xs font-medium uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5">
                                     <img src="https://i.ibb.co.com/kVzGR565/no-Filter.png" alt="Gladiator" class="w-4 h-4 sm:w-5 md:w-6 sm:h-5 md:h-6 object-contain item-image flex-shrink-0">
-                                    <span class="hidden xs:inline">Gladiator</span>
+                                    <span class="hidden sm:inline">Gladiator</span>
                                 </span>
                             </th>
                             <th class="py-3 sm:py-4 px-2 sm:px-4 md:px-6 text-center">
                                 <span class="text-gray-500 text-[10px] xs:text-xs font-medium uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5">
                                     <img src="https://i.ibb.co.com/bMhfSHw4/no-Filter-2.png" alt="Stone" class="w-4 h-4 sm:w-5 md:w-6 sm:h-5 md:h-6 object-contain item-image flex-shrink-0">
-                                    <span class="hidden xs:inline">Stone</span>
+                                    <span class="hidden sm:inline">Stone</span>
                                 </span>
                             </th>
                             <th class="py-3 sm:py-4 px-2 sm:px-4 md:px-6 text-center">
@@ -413,6 +457,13 @@ HTML_TEMPLATE = """
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
+        // Prevent horizontal scroll
+        document.addEventListener('touchmove', function(e) {
+            if (e.target.closest('.table-wrapper')) {
+                return;
+            }
+        }, { passive: true });
+        
         // Initialize AOS with once: true untuk animasi sekali jalan
         AOS.init({
             duration: 800,
