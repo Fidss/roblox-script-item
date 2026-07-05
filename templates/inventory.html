@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GemstonesHub • Inventory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        * { box-sizing: border-box; }
+        body { background: #0a0a0f; font-family: 'Poppins', sans-serif; }
+        .table-wrapper { overflow-x: auto; }
+        .table-wrapper table { min-width: 600px; width: 100%; }
+        .value-badge { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 0.375rem; 
+            padding: 0.25rem 0.75rem; 
+            border-radius: 0.5rem; 
+            font-weight: 500; 
+            font-size: 0.875rem; 
+        }
+        .item-image { 
+            width: 20px; 
+            height: 20px; 
+            object-fit: contain; 
+            flex-shrink: 0;
+        }
+        @media (max-width: 640px) { 
+            .table-wrapper table { min-width: 500px; }
+            .item-image { width: 16px; height: 16px; }
+        }
+    </style>
+</head>
+<body class="bg-[#0a0a0f] min-h-screen">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+            <div>
+                <h1 class="text-2xl sm:text-3xl font-semibold text-white">
+                    Gemstones<span class="text-blue-400">Hub</span>
+                </h1>
+                <p class="text-gray-500 text-sm">Inventory Tracking Dashboard</p>
+            </div>
+            <div class="flex gap-3 w-full sm:w-auto">
+                <button onclick="resetData()" class="px-4 py-2 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm hover:bg-red-500/20">
+                    <i class="fa-solid fa-rotate-left mr-2"></i>Reset
+                </button>
+                <a href="/" class="px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-xl text-blue-400 text-sm hover:bg-blue-500/20">
+                    <i class="fa-solid fa-robot mr-2"></i>Bot Dashboard
+                </a>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-3 gap-4 mb-8">
+            <div class="bg-[#12121a] border border-gray-800/60 rounded-2xl p-4">
+                <div class="flex items-center gap-2 mb-1">
+                    <img src="https://i.ibb.co.com/qMgYjNyS/no-Filter-1.png" alt="Elshark" class="w-5 h-5 object-contain">
+                    <p class="text-gray-500 text-xs uppercase">Elshark</p>
+                </div>
+                <p class="text-2xl font-semibold text-white">{{ total_shark }}</p>
+            </div>
+            <div class="bg-[#12121a] border border-gray-800/60 rounded-2xl p-4">
+                <div class="flex items-center gap-2 mb-1">
+                    <img src="https://i.ibb.co.com/kVzGR565/no-Filter.png" alt="Gladiator" class="w-5 h-5 object-contain">
+                    <p class="text-gray-500 text-xs uppercase">Gladiator</p>
+                </div>
+                <p class="text-2xl font-semibold text-white">{{ total_gladiator }}</p>
+            </div>
+            <div class="bg-[#12121a] border border-gray-800/60 rounded-2xl p-4">
+                <div class="flex items-center gap-2 mb-1">
+                    <img src="https://i.ibb.co.com/bMhfSHw4/no-Filter-2.png" alt="Stone" class="w-5 h-5 object-contain">
+                    <p class="text-gray-500 text-xs uppercase">Enchant Stone</p>
+                </div>
+                <p class="text-2xl font-semibold text-white">{{ total_stone }}</p>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="bg-[#12121a] border border-gray-800/60 rounded-2xl overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-800/60">
+                <h2 class="text-white font-medium"><i class="fa-solid fa-users mr-2"></i>Player Inventory</h2>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr class="border-b border-gray-800/60">
+                            <th class="py-3 px-6 text-left text-gray-500 text-xs uppercase">Player</th>
+                            <th class="py-3 px-6 text-center">
+                                <span class="text-gray-500 text-xs uppercase flex items-center justify-center gap-1.5">
+                                    <img src="https://i.ibb.co.com/qMgYjNyS/no-Filter-1.png" alt="Elshark" class="item-image">
+                                    <span>Elshark</span>
+                                </span>
+                            </th>
+                            <th class="py-3 px-6 text-center">
+                                <span class="text-gray-500 text-xs uppercase flex items-center justify-center gap-1.5">
+                                    <img src="https://i.ibb.co.com/kVzGR565/no-Filter.png" alt="Gladiator" class="item-image">
+                                    <span>Gladiator</span>
+                                </span>
+                            </th>
+                            <th class="py-3 px-6 text-center">
+                                <span class="text-gray-500 text-xs uppercase flex items-center justify-center gap-1.5">
+                                    <img src="https://i.ibb.co.com/bMhfSHw4/no-Filter-2.png" alt="Stone" class="item-image">
+                                    <span>Stone</span>
+                                </span>
+                            </th>
+                            <th class="py-3 px-6 text-center text-gray-500 text-xs uppercase">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in data %}
+                        <tr class="hover:bg-white/[0.02]" data-username="{{ row.username }}">
+                            <td class="py-3 px-6 text-white">{{ row.username }}</td>
+                            <td class="py-3 px-6 text-center">
+                                <span class="value-badge bg-blue-500/10 text-blue-400">
+                                    <span class="item-value" data-field="elshark_gran_maja">{{ row.elshark_gran_maja }}</span>
+                                </span>
+                            </td>
+                            <td class="py-3 px-6 text-center">
+                                <span class="value-badge bg-purple-500/10 text-purple-400">
+                                    <span class="item-value" data-field="gladiator_shark">{{ row.gladiator_shark }}</span>
+                                </span>
+                            </td>
+                            <td class="py-3 px-6 text-center">
+                                <span class="value-badge bg-amber-500/10 text-amber-400">
+                                    <span class="item-value" data-field="evolved_enchant_stone">{{ row.evolved_enchant_stone }}</span>
+                                </span>
+                            </td>
+                            <td class="py-3 px-6 text-center">
+                                <button onclick="openEditModal('{{ row.username }}', {{ row.elshark_gran_maja }}, {{ row.gladiator_shark }}, {{ row.evolved_enchant_stone }})" 
+                                        class="px-3 py-1 bg-gray-800 hover:bg-blue-500/20 text-gray-400 hover:text-blue-400 rounded-lg transition">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% if not data %}
+                        <tr><td colspan="5" class="py-8 text-center text-gray-500">No data yet</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="fixed inset-0 hidden items-center justify-center p-4" style="background: rgba(0,0,0,0.6);">
+        <div class="bg-[#12121a] border border-gray-800/60 rounded-2xl p-6 max-w-md w-full">
+            <h3 class="text-lg font-semibold text-white mb-4">
+                <i class="fa-solid fa-pen-to-square text-blue-400 mr-2"></i>Edit Inventory
+            </h3>
+            <div class="mb-4">
+                <label class="block text-gray-400 text-sm mb-1">Username</label>
+                <input type="text" id="editUsername" disabled class="w-full bg-[#0a0a0f] border border-gray-700 rounded-xl px-4 py-2 text-gray-400">
+            </div>
+            <div class="space-y-3 mb-4">
+                <div>
+                    <label class="flex items-center gap-2 text-gray-400 text-sm mb-1">
+                        <img src="https://i.ibb.co.com/qMgYjNyS/no-Filter-1.png" alt="Elshark" class="w-4 h-4 object-contain">
+                        Elshark Gran Maja
+                    </label>
+                    <div class="flex gap-2">
+                        <button onclick="decrementValue('editElshark')" class="px-3 py-1 bg-gray-800 rounded-lg text-white">-</button>
+                        <input type="number" id="editElshark" min="0" class="flex-1 bg-[#0a0a0f] border border-gray-700 rounded-xl px-4 py-2 text-white text-center">
+                        <button onclick="incrementValue('editElshark')" class="px-3 py-1 bg-gray-800 rounded-lg text-white">+</button>
+                    </div>
+                </div>
+                <div>
+                    <label class="flex items-center gap-2 text-gray-400 text-sm mb-1">
+                        <img src="https://i.ibb.co.com/kVzGR565/no-Filter.png" alt="Gladiator" class="w-4 h-4 object-contain">
+                        Gladiator Shark
+                    </label>
+                    <div class="flex gap-2">
+                        <button onclick="decrementValue('editGladiator')" class="px-3 py-1 bg-gray-800 rounded-lg text-white">-</button>
+                        <input type="number" id="editGladiator" min="0" class="flex-1 bg-[#0a0a0f] border border-gray-700 rounded-xl px-4 py-2 text-white text-center">
+                        <button onclick="incrementValue('editGladiator')" class="px-3 py-1 bg-gray-800 rounded-lg text-white">+</button>
+                    </div>
+                </div>
+                <div>
+                    <label class="flex items-center gap-2 text-gray-400 text-sm mb-1">
+                        <img src="https://i.ibb.co.com/bMhfSHw4/no-Filter-2.png" alt="Stone" class="w-4 h-4 object-contain">
+                        Evolved Enchant Stone
+                    </label>
+                    <div class="flex gap-2">
+                        <button onclick="decrementValue('editStone')" class="px-3 py-1 bg-gray-800 rounded-lg text-white">-</button>
+                        <input type="number" id="editStone" min="0" class="flex-1 bg-[#0a0a0f] border border-gray-700 rounded-xl px-4 py-2 text-white text-center">
+                        <button onclick="incrementValue('editStone')" class="px-3 py-1 bg-gray-800 rounded-lg text-white">+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeEditModal()" class="flex-1 px-4 py-2 rounded-xl border border-gray-700 text-gray-400 hover:bg-gray-800">Cancel</button>
+                <button onclick="saveEdit()" class="flex-1 px-4 py-2 rounded-xl bg-blue-500 text-white hover:bg-blue-600">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentEditingUser = null;
+
+        function openEditModal(username, elshark, gladiator, stone) {
+            currentEditingUser = username;
+            document.getElementById('editUsername').value = username;
+            document.getElementById('editElshark').value = elshark;
+            document.getElementById('editGladiator').value = gladiator;
+            document.getElementById('editStone').value = stone;
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+            currentEditingUser = null;
+        }
+
+        function incrementValue(id) {
+            const input = document.getElementById(id);
+            input.value = parseInt(input.value) + 1;
+        }
+
+        function decrementValue(id) {
+            const input = document.getElementById(id);
+            const val = parseInt(input.value) - 1;
+            input.value = val >= 0 ? val : 0;
+        }
+
+        function saveEdit() {
+            if (!currentEditingUser) return;
+            const data = {
+                username: currentEditingUser,
+                elshark_gran_maja: parseInt(document.getElementById('editElshark').value),
+                gladiator_shark: parseInt(document.getElementById('editGladiator').value),
+                evolved_enchant_stone: parseInt(document.getElementById('editStone').value)
+            };
+
+            fetch('/api/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.status === 'success') {
+                    location.reload();
+                } else {
+                    alert('Failed to update');
+                }
+            })
+            .catch(error => alert('Error: ' + error));
+        }
+
+        function resetData() {
+            if (confirm('Reset all inventory to 0?')) {
+                fetch('/api/reset', { method: 'POST' })
+                .then(() => location.reload());
+            }
+        }
+    </script>
+</body>
+</html>
