@@ -38,81 +38,87 @@
             object-fit: contain; 
             flex-shrink: 0;
         }
+        .stats-card {
+            transition: all 0.3s ease;
+        }
+        .stats-card:hover {
+            transform: translateY(-2px);
+        }
         @media (max-width: 640px) { 
             .table-wrapper table { min-width: 500px; }
         }
     </style>
 </head>
 <body class="bg-[#0a0a0f] min-h-screen">
-    <div class="max-w-6xl mx-auto px-4 py-8">
-        <!-- Header -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-            <div>
-                <h1 class="text-2xl sm:text-3xl font-semibold text-white">
-                    Gemstones<span class="text-blue-400">Hub</span>
-                </h1>
-                <p class="text-gray-500 text-sm">Inventory Tracking Dashboard</p>
+    <div class="max-w-6xl mx-auto px-3 sm:px-4 lg:px-6 py-6 sm:py-10">
+        <!-- Header Section -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6 mb-6 sm:mb-10">
+            <div class="space-y-1">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/25 flex-shrink-0">
+                        <i class="fa-solid fa-gem text-white text-sm sm:text-lg"></i>
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl font-semibold text-white tracking-tight">
+                        Gemstones<span class="text-blue-400">Hub</span>
+                    </h1>
+                </div>
+                <p class="text-gray-500 text-xs sm:text-sm ml-10 sm:ml-13">
+                    Inventory tracking dashboard
+                </p>
             </div>
-            <div class="flex gap-3 w-full sm:w-auto">
-                <button onclick="resetData()" class="px-4 py-2 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm hover:bg-red-500/20 transition-colors">
-                    <i class="fa-solid fa-rotate-left mr-2"></i>Reset
+            
+            <div class="flex gap-2 sm:gap-3 w-full sm:w-auto">
+                <button onclick="resetData()" 
+                        class="group flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 font-medium text-xs sm:text-sm hover:bg-red-500/20 hover:border-red-500/40 transition-all duration-300 w-full sm:w-auto justify-center">
+                    <i class="fa-solid fa-rotate-left group-hover:-translate-x-1 transition-transform duration-300"></i>
+                    <span>Reset Data</span>
                 </button>
-                <a href="/" class="px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-xl text-blue-400 text-sm hover:bg-blue-500/20 transition-colors">
-                    <i class="fa-solid fa-robot mr-2"></i>Bot Dashboard
+                <a href="/" 
+                   class="group flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-blue-500/10 border border-blue-500/20 rounded-xl text-blue-400 font-medium text-xs sm:text-sm hover:bg-blue-500/20 hover:border-blue-500/40 transition-all duration-300 w-full sm:w-auto justify-center">
+                    <i class="fa-solid fa-robot group-hover:-translate-x-1 transition-transform duration-300"></i>
+                    <span>Bot Dashboard</span>
                 </a>
             </div>
         </div>
 
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
+        <!-- Stats Overview Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5 mb-6 sm:mb-10">
             <!-- Elshark Card -->
-            <div class="bg-[#12121a] border border-blue-500/20 rounded-2xl p-4 sm:p-5 hover:border-blue-500/40 transition-all">
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <img src="https://i.ibb.co.com/qMgYjNyS/no-Filter-1.png" alt="Elshark" class="w-6 h-6 sm:w-8 sm:h-8 object-contain">
+            <div class="bg-[#12121a] border border-gray-800/60 rounded-2xl p-3 sm:p-5 hover:border-blue-500/30 transition-all duration-300 group stats-card">
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <div class="w-10 h-10 sm:w-12 md:w-14 sm:h-12 md:h-14 rounded-xl bg-blue-500/10 flex items-center justify-center p-1.5 sm:p-2 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+                        <img src="https://i.ibb.co.com/qMgYjNyS/no-Filter-1.png" alt="Elshark" class="w-full h-full object-contain item-image">
                     </div>
-                    <div>
-                        <p class="text-gray-400 text-xs uppercase font-medium">Elshark</p>
-                        <p class="text-lg sm:text-xl text-white font-semibold">Gran Maja</p>
+                    <div class="min-w-0 flex-1">
+                        <p class="text-gray-500 text-[10px] xs:text-xs uppercase tracking-wider truncate">Elshark Gran Maja</p>
+                        <p class="text-lg sm:text-xl md:text-2xl font-semibold text-white mt-0.5 sm:mt-1 tabular-nums">{{ total_shark }}</p>
                     </div>
-                </div>
-                <div class="flex items-end justify-between">
-                    <p class="text-3xl sm:text-4xl font-bold text-blue-400">{{ total_shark }}</p>
-                    <span class="text-xs text-gray-500">Total</span>
                 </div>
             </div>
-
+            
             <!-- Gladiator Card -->
-            <div class="bg-[#12121a] border border-purple-500/20 rounded-2xl p-4 sm:p-5 hover:border-purple-500/40 transition-all">
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-purple-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <img src="https://i.ibb.co.com/kVzGR565/no-Filter.png" alt="Gladiator" class="w-6 h-6 sm:w-8 sm:h-8 object-contain">
+            <div class="bg-[#12121a] border border-gray-800/60 rounded-2xl p-3 sm:p-5 hover:border-purple-500/30 transition-all duration-300 group stats-card">
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <div class="w-10 h-10 sm:w-12 md:w-14 sm:h-12 md:h-14 rounded-xl bg-purple-500/10 flex items-center justify-center p-1.5 sm:p-2 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+                        <img src="https://i.ibb.co.com/kVzGR565/no-Filter.png" alt="Gladiator" class="w-full h-full object-contain item-image">
                     </div>
-                    <div>
-                        <p class="text-gray-400 text-xs uppercase font-medium">Gladiator</p>
-                        <p class="text-lg sm:text-xl text-white font-semibold">Shark</p>
+                    <div class="min-w-0 flex-1">
+                        <p class="text-gray-500 text-[10px] xs:text-xs uppercase tracking-wider truncate">Gladiator Shark</p>
+                        <p class="text-lg sm:text-xl md:text-2xl font-semibold text-white mt-0.5 sm:mt-1 tabular-nums">{{ total_gladiator }}</p>
                     </div>
-                </div>
-                <div class="flex items-end justify-between">
-                    <p class="text-3xl sm:text-4xl font-bold text-purple-400">{{ total_gladiator }}</p>
-                    <span class="text-xs text-gray-500">Total</span>
                 </div>
             </div>
-
+            
             <!-- Enchant Stone Card -->
-            <div class="bg-[#12121a] border border-amber-500/20 rounded-2xl p-4 sm:p-5 hover:border-amber-500/40 transition-all">
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-amber-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <img src="https://i.ibb.co.com/bMhfSHw4/no-Filter-2.png" alt="Stone" class="w-6 h-6 sm:w-8 sm:h-8 object-contain">
+            <div class="bg-[#12121a] border border-gray-800/60 rounded-2xl p-3 sm:p-5 hover:border-amber-500/30 transition-all duration-300 group stats-card">
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <div class="w-10 h-10 sm:w-12 md:w-14 sm:h-12 md:h-14 rounded-xl bg-amber-500/10 flex items-center justify-center p-1.5 sm:p-2 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+                        <img src="https://i.ibb.co.com/bMhfSHw4/no-Filter-2.png" alt="Enchant Stone" class="w-full h-full object-contain item-image">
                     </div>
-                    <div>
-                        <p class="text-gray-400 text-xs uppercase font-medium">Enchant</p>
-                        <p class="text-lg sm:text-xl text-white font-semibold">Stone</p>
+                    <div class="min-w-0 flex-1">
+                        <p class="text-gray-500 text-[10px] xs:text-xs uppercase tracking-wider truncate">Enchant Stone</p>
+                        <p class="text-lg sm:text-xl md:text-2xl font-semibold text-white mt-0.5 sm:mt-1 tabular-nums">{{ total_stone }}</p>
                     </div>
-                </div>
-                <div class="flex items-end justify-between">
-                    <p class="text-3xl sm:text-4xl font-bold text-amber-400">{{ total_stone }}</p>
-                    <span class="text-xs text-gray-500">Total</span>
                 </div>
             </div>
         </div>
@@ -151,29 +157,19 @@
                     <tbody>
                         {% for row in data %}
                         <tr class="hover:bg-white/[0.02] transition-colors" data-username="{{ row.username }}">
-                            <td class="py-3 px-3 sm:px-6 text-white text-sm">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center flex-shrink-0">
-                                        <i class="fa-solid fa-user text-xs text-gray-400"></i>
-                                    </div>
-                                    {{ row.username }}
-                                </div>
-                            </td>
+                            <td class="py-3 px-3 sm:px-6 text-white text-sm">{{ row.username }}</td>
                             <td class="py-3 px-3 sm:px-6 text-center">
                                 <span class="value-badge bg-blue-500/10 text-blue-400 text-sm">
-                                    <i class="fa-solid fa-gem text-xs"></i>
                                     <span class="item-value font-semibold" data-field="elshark_gran_maja">{{ row.elshark_gran_maja }}</span>
                                 </span>
                             </td>
                             <td class="py-3 px-3 sm:px-6 text-center">
                                 <span class="value-badge bg-purple-500/10 text-purple-400 text-sm">
-                                    <i class="fa-solid fa-shield-halved text-xs"></i>
                                     <span class="item-value font-semibold" data-field="gladiator_shark">{{ row.gladiator_shark }}</span>
                                 </span>
                             </td>
                             <td class="py-3 px-3 sm:px-6 text-center">
                                 <span class="value-badge bg-amber-500/10 text-amber-400 text-sm">
-                                    <i class="fa-solid fa-bolt text-xs"></i>
                                     <span class="item-value font-semibold" data-field="evolved_enchant_stone">{{ row.evolved_enchant_stone }}</span>
                                 </span>
                             </td>
@@ -218,105 +214,84 @@
             </div>
             
             <!-- Username Field -->
-            <div class="mb-5">
-                <label class="block text-gray-400 text-xs font-medium mb-2">PLAYER</label>
-                <div class="relative">
-                    <div class="absolute left-3 top-1/2 -translate-y-1/2">
-                        <i class="fa-solid fa-user text-gray-500"></i>
-                    </div>
-                    <input type="text" id="editUsername" disabled 
-                           class="w-full bg-[#0a0a0f] border border-gray-700 rounded-xl pl-10 pr-4 py-3 text-gray-300 font-medium">
-                </div>
+            <div class="mb-3 sm:mb-4">
+                <label class="block text-gray-400 text-xs sm:text-sm mb-1.5 sm:mb-2">Username</label>
+                <input type="text" id="editUsername" disabled 
+                       class="w-full bg-[#0a0a0f] border border-gray-700 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-gray-400 font-medium">
             </div>
-
+            
             <!-- Items Section -->
-            <div class="space-y-4 mb-6">
+            <div class="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
                 <!-- Elshark -->
-                <div class="bg-[#0a0a0f] rounded-xl p-3 sm:p-4 border border-gray-800">
-                    <label class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 sm:w-11 sm:h-11 bg-blue-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <img src="https://i.ibb.co.com/qMgYjNyS/no-Filter-1.png" alt="Elshark" class="w-6 h-6 sm:w-7 sm:h-7 object-contain item-image">
-                        </div>
-                        <div>
-                            <span class="text-gray-300 text-sm font-medium">Elshark Gran Maja</span>
-                            <p class="text-gray-600 text-xs">Rare Item</p>
-                        </div>
+                <div>
+                    <label class="block text-gray-400 text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2">
+                        <img src="https://i.ibb.co.com/qMgYjNyS/no-Filter-1.png" alt="Elshark" class="w-6 h-6 sm:w-8 sm:h-8 object-contain item-image">
+                        <span>Elshark Gran Maja</span>
                     </label>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1.5 sm:gap-2">
                         <button onclick="decrementValue('editElshark')" 
-                                class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gray-800 hover:bg-red-500/20 hover:text-red-400 text-white flex items-center justify-center transition-all flex-shrink-0">
+                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors flex-shrink-0">
                             <i class="fa-solid fa-minus text-xs sm:text-sm"></i>
                         </button>
                         <input type="number" id="editElshark" min="0" 
-                               class="flex-1 bg-[#12121a] border border-gray-700 rounded-xl px-4 py-2.5 sm:py-3 text-white text-center font-semibold text-lg focus:border-blue-500 focus:outline-none min-w-0 transition-colors">
+                               class="flex-1 bg-[#0a0a0f] border border-gray-700 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white text-center font-medium focus:border-blue-500 focus:outline-none min-w-0">
                         <button onclick="incrementValue('editElshark')" 
-                                class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gray-800 hover:bg-blue-500/20 hover:text-blue-400 text-white flex items-center justify-center transition-all flex-shrink-0">
+                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors flex-shrink-0">
                             <i class="fa-solid fa-plus text-xs sm:text-sm"></i>
                         </button>
                     </div>
                 </div>
                 
                 <!-- Gladiator -->
-                <div class="bg-[#0a0a0f] rounded-xl p-3 sm:p-4 border border-gray-800">
-                    <label class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 sm:w-11 sm:h-11 bg-purple-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <img src="https://i.ibb.co.com/kVzGR565/no-Filter.png" alt="Gladiator" class="w-6 h-6 sm:w-7 sm:h-7 object-contain item-image">
-                        </div>
-                        <div>
-                            <span class="text-gray-300 text-sm font-medium">Gladiator Shark</span>
-                            <p class="text-gray-600 text-xs">Legendary Item</p>
-                        </div>
+                <div>
+                    <label class="block text-gray-400 text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2">
+                        <img src="https://i.ibb.co.com/kVzGR565/no-Filter.png" alt="Gladiator" class="w-6 h-6 sm:w-8 sm:h-8 object-contain item-image">
+                        <span>Gladiator Shark</span>
                     </label>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1.5 sm:gap-2">
                         <button onclick="decrementValue('editGladiator')" 
-                                class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gray-800 hover:bg-red-500/20 hover:text-red-400 text-white flex items-center justify-center transition-all flex-shrink-0">
+                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors flex-shrink-0">
                             <i class="fa-solid fa-minus text-xs sm:text-sm"></i>
                         </button>
                         <input type="number" id="editGladiator" min="0" 
-                               class="flex-1 bg-[#12121a] border border-gray-700 rounded-xl px-4 py-2.5 sm:py-3 text-white text-center font-semibold text-lg focus:border-purple-500 focus:outline-none min-w-0 transition-colors">
+                               class="flex-1 bg-[#0a0a0f] border border-gray-700 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white text-center font-medium focus:border-purple-500 focus:outline-none min-w-0">
                         <button onclick="incrementValue('editGladiator')" 
-                                class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gray-800 hover:bg-purple-500/20 hover:text-purple-400 text-white flex items-center justify-center transition-all flex-shrink-0">
+                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors flex-shrink-0">
                             <i class="fa-solid fa-plus text-xs sm:text-sm"></i>
                         </button>
                     </div>
                 </div>
                 
                 <!-- Enchant Stone -->
-                <div class="bg-[#0a0a0f] rounded-xl p-3 sm:p-4 border border-gray-800">
-                    <label class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 sm:w-11 sm:h-11 bg-amber-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <img src="https://i.ibb.co.com/bMhfSHw4/no-Filter-2.png" alt="Enchant Stone" class="w-6 h-6 sm:w-7 sm:h-7 object-contain item-image">
-                        </div>
-                        <div>
-                            <span class="text-gray-300 text-sm font-medium">Evolved Enchant Stone</span>
-                            <p class="text-gray-600 text-xs">Special Item</p>
-                        </div>
+                <div>
+                    <label class="block text-gray-400 text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-2">
+                        <img src="https://i.ibb.co.com/bMhfSHw4/no-Filter-2.png" alt="Enchant Stone" class="w-6 h-6 sm:w-8 sm:h-8 object-contain item-image">
+                        <span>Evolved Enchant Stone</span>
                     </label>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1.5 sm:gap-2">
                         <button onclick="decrementValue('editStone')" 
-                                class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gray-800 hover:bg-red-500/20 hover:text-red-400 text-white flex items-center justify-center transition-all flex-shrink-0">
+                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors flex-shrink-0">
                             <i class="fa-solid fa-minus text-xs sm:text-sm"></i>
                         </button>
                         <input type="number" id="editStone" min="0" 
-                               class="flex-1 bg-[#12121a] border border-gray-700 rounded-xl px-4 py-2.5 sm:py-3 text-white text-center font-semibold text-lg focus:border-amber-500 focus:outline-none min-w-0 transition-colors">
+                               class="flex-1 bg-[#0a0a0f] border border-gray-700 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white text-center font-medium focus:border-amber-500 focus:outline-none min-w-0">
                         <button onclick="incrementValue('editStone')" 
-                                class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gray-800 hover:bg-amber-500/20 hover:text-amber-400 text-white flex items-center justify-center transition-all flex-shrink-0">
+                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gray-800 hover:bg-gray-700 text-white flex items-center justify-center transition-colors flex-shrink-0">
                             <i class="fa-solid fa-plus text-xs sm:text-sm"></i>
                         </button>
                     </div>
                 </div>
             </div>
-
+            
             <!-- Action Buttons -->
-            <div class="flex gap-3">
+            <div class="flex gap-2 sm:gap-3">
                 <button onclick="closeEditModal()" 
-                        class="flex-1 px-4 py-3 rounded-xl border border-gray-700 text-gray-400 hover:bg-gray-800 hover:text-white transition-all font-medium">
+                        class="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border border-gray-700 text-gray-400 text-sm sm:text-base font-medium hover:bg-gray-800 transition-colors">
                     Cancel
                 </button>
                 <button onclick="saveEdit()" 
-                        class="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 transition-all font-medium flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-check"></i>
-                    Save Changes
+                        class="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm sm:text-base font-medium hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg shadow-blue-500/25">
+                    <i class="fa-solid fa-check mr-1 sm:mr-2"></i> Save
                 </button>
             </div>
         </div>
